@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="8dp"
+    android:onClick=""
+    android:layout_marginBottom="16dp">
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <ImageView
+            android:id="@+id/ivThumbnail"
+            tools:src="@mipmap/ic_launcher"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivThumbnail"
+            tools:text="Here is a sample headline"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:maxLines="2"/>
+        <TextView
+            android:id="@+id/tvSynopsis"
+            tools:text="This is a sample text of synopsis here is what is happening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:ellipsize="end"
+            android:maxLines="5"/>
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
