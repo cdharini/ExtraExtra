@@ -1,23 +1,27 @@
 package com.projects.cdharini.extraextra.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.projects.cdharini.extraextra.R;
+import com.projects.cdharini.extraextra.activities.ArticleActivity;
 import com.projects.cdharini.extraextra.models.NewsArticle;
+import com.projects.cdharini.extraextra.utils.ExtraExtraConstants;
 import com.squareup.picasso.Picasso;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
 /**
  * Created by dharinic on 9/19/17.
+ * Adapter for Recycler view to show news articles
  */
 
 public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.ViewHolder> {
@@ -75,8 +79,10 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
 
         @Override
         public void onClick(View v) {
-            Log.d("Dharini", "toasting click " + getOldPosition());
-            Toast.makeText(mContext, tvTitle.getText().toString() + " is clicked!", Toast.LENGTH_SHORT).show();
+            // Open activity to display article
+            Intent intent = new Intent(mContext, ArticleActivity.class);
+            intent.putExtra(ExtraExtraConstants.ARTICLE, Parcels.wrap(mNewsArticles.get(getAdapterPosition())));
+            mContext.startActivity(intent);
         }
     }
 }

@@ -3,4 +3,19 @@
     <string name="action_settings">Settings</string>
     <string name="hintsearch">Enter your search here</string>
     <string name="search">Search</string>
+    <string name="beginDate">Begin Date</string>
+    <string name="sortOrder">Sort Order</string>
+    <string name="newsDeskValues">News desk values</string>
+    <string name="save">Save</string>
+    <string name="newsdesk1">Books</string>
+    <string name="newsdesk2">Sports</string>
+    <string name="newsdesk3">Science</string>
+
+    <string-array name="sortorder_array">
+        <item>Oldest</item>
+        <item>Newest</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

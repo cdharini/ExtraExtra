@@ -5,27 +5,30 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Model class for NYT news article
  * Created by dharinic on 9/19/17.
  */
-
-public class NewsArticle {
-    public static final String URL_PREFIX = "http://www.nytimes.com/";
+@Parcel
+public class NewsArticle{
+    private static final String URL_PREFIX = "http://www.nytimes.com/";
 
     String mThumbnail;
     String mTitleText;
     String mSynopsis;
     String mWebUrl;
 
-    /*public NewsArticle(String thumbnail, String titleText, String synopsis) {
-        mThumbnail = thumbnail;
-        mTitleText = titleText;
-        mSynopsis = synopsis;
-    }*/
+    /*
+     * Constructor for Parceler library
+     */
+    public NewsArticle() {
+
+    }
 
     public static NewsArticle fromJSON(JSONObject object) throws JSONException{
         NewsArticle newsArticle = new NewsArticle();
@@ -51,7 +54,7 @@ public class NewsArticle {
             try {
                 newsArticles.add(fromJSON(array.getJSONObject(i)));
             } catch (JSONException e) {
-                Log.d("DEBUG", "JSON exception while creating model");
+                Log.e("DEBUG", "JSON exception while creating model");
             }
         }
         return newsArticles;
@@ -67,5 +70,9 @@ public class NewsArticle {
 
     public String getSynopsis() {
         return mSynopsis;
+    }
+
+    public String getWebUrl() {
+        return mWebUrl;
     }
 }

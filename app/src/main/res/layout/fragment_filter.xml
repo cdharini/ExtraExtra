@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.projects.cdharini.extraextra.fragments.FilterDialogFragment">
+    <TextView
+        android:id="@+id/tvBeginDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/beginDate" />
+
+    <TextView
+        android:id="@+id/tvBeginDateSelected"
+        android:layout_below="@id/tvBeginDate"
+        android:layout_width="wrap_content"
+        tools:text="2017-08-21"
+        android:layout_alignStart="@+id/tvBeginDate"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tvSortOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvBeginDateSelected"
+        android:layout_below="@+id/tvBeginDateSelected"
+        android:layout_marginTop="20dp"
+        android:text="@string/sortOrder" />
+
+    <Spinner
+        android:id="@+id/spSortOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvSortOrder"
+        android:layout_marginStart="34dp" />
+
+    <TextView
+        android:id="@+id/tvCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvSortOrder"
+        android:layout_below="@+id/spSortOrder"
+        android:layout_marginTop="10dp"
+        android:text="@string/newsDeskValues" />
+
+    <CheckBox
+        android:id="@+id/cbNewsdesk1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvCategory"
+        android:layout_below="@+id/tvCategory"
+        android:text="@string/newsdesk1" />
+
+    <CheckBox
+        android:id="@+id/cbNewsdesk2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvCategory"
+        android:layout_below="@+id/cbNewsdesk1"
+        android:text="@string/newsdesk2" />
+
+    <CheckBox
+        android:id="@+id/cbNewsdesk3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvCategory"
+        android:layout_below="@+id/cbNewsdesk2"
+        android:text="@string/newsdesk3" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cbNewsdesk3"
+        android:layout_marginTop="20dp"
+        android:text="@string/save" />
+
+</RelativeLayout>
