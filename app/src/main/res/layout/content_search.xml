@@ -37,6 +37,7 @@
         android:id="@+id/rvNewsGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorDivider"
         android:layout_below="@+id/etSearch"/>
 
 </RelativeLayout>

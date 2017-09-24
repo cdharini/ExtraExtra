@@ -2,7 +2,7 @@
 
 **Extra! Extra!** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **8** hours spent in total
+Time spent: **9** hours spent in total
 
 ## User Stories
 
@@ -16,7 +16,7 @@ The following **required** functionality is completed:
   * [x] Sort order (oldest or newest)
 * [x] Subsequent searches have any filters applied to the search results
 * [x] User can tap on any article in results to view the contents in an embedded browser.
-* [ ] User can **scroll down infinitely**. The maximum number of articles is limited by the API search.
+* [x] User can **scroll down infinitely**. The maximum number of articles is limited by the API search.
 
 The following **optional** features are implemented:
 
@@ -24,7 +24,7 @@ The following **optional** features are implemented:
 * [ ] Used the **ActionBar SearchView** or custom layout as the query box instead of an EditText
 * [ ] User can **share an article link** to their friends or email it to themselves
 * [x] Replaced Filter Settings Activity with a lightweight modal overlay
-* [ ] Improve UI
+* [x] Improve UI
 
 The following **bonus** features are implemented:
 

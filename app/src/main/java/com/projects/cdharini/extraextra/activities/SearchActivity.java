@@ -23,6 +23,7 @@ import com.projects.cdharini.extraextra.R;
 import com.projects.cdharini.extraextra.adapters.NewsArticleAdapter;
 import com.projects.cdharini.extraextra.fragments.FilterDialogFragment;
 import com.projects.cdharini.extraextra.models.NewsArticle;
+import com.projects.cdharini.extraextra.utils.EndlessRecyclerViewScrollListener;
 import com.projects.cdharini.extraextra.utils.ExtraExtraConstants;
 
 import org.json.JSONArray;
@@ -46,6 +47,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
 
     List<NewsArticle> mNewsList;
     NewsArticleAdapter mAdapter;
+    EndlessRecyclerViewScrollListener mScrollListener;
 
     // User preference filters
     String mSortPref;
@@ -63,12 +65,20 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         etSearchText = (EditText) findViewById(R.id.etSearch);
         btnSearch = (Button) findViewById(R.id.btnSearch);
         rvNewsGrid = (RecyclerView) findViewById(R.id.rvNewsGrid);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         mNewsList = new ArrayList<NewsArticle>();
         mAdapter = new NewsArticleAdapter(this, mNewsList);
+
+        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                refreshArticles(false, page);
+            }
+        };
         rvNewsGrid.setLayoutManager(layoutManager);
         rvNewsGrid.setAdapter(mAdapter);
+        rvNewsGrid.addOnScrollListener(mScrollListener);
     }
 
     @Override
@@ -103,7 +113,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
      * Click listener for Search button
      */
     public void onSearchClick(View view) {
-        refreshArticles();
+        refreshArticles(true, 0);
     }
 
     @Override
@@ -115,17 +125,24 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         mSortPref = preferences.getString(ExtraExtraConstants.SORT_ORDER_PREF, ExtraExtraConstants.SORT_DEFAULT);
 
         // Refresh articles
-        refreshArticles();
+        refreshArticles(true, 0);
     }
 
     /*
      * Fetches articles and refreshes adapter
      */
-    public void refreshArticles() {
+    public void refreshArticles(boolean clearExisting, int page) {
+
+        if (clearExisting) {
+            mNewsList.clear();
+            mAdapter.notifyDataSetChanged();
+            mScrollListener.resetState();
+        }
+
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams requestParams = new RequestParams();
         requestParams.put("api-key", ExtraExtraConstants.API_KEY);
-        requestParams.put("page", "1");
+        requestParams.put("page", "" + page);
         requestParams.put("q", etSearchText.getText().toString());
         requestParams.put(ExtraExtraConstants.BEGIN_DATE_PREF, mBeginDatePref);
         requestParams.put(ExtraExtraConstants.SORT_ORDER_PREF, mSortPref);
@@ -138,9 +155,9 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
                 try {
                     JSONObject searchResponse = response.getJSONObject("response");
                     JSONArray news = searchResponse.getJSONArray("docs");
-                    mNewsList.clear();
+
                     mNewsList.addAll(NewsArticle.fromJSONArray(news));
-                    mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), mNewsList.size() - 1);
                 } catch (JSONException e) {
                     Log.d("DEBUG", "couldn't parse response");
                 }
@@ -148,10 +165,11 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Toast.makeText(SearchActivity.this, "Failed to fetch articles", Toast.LENGTH_LONG).show();
-                super.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, throwable, errorResponse);
             }
+
         });
     }
 }
