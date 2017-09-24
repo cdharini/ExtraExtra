@@ -61,7 +61,7 @@ public class NewsArticle{
     }
 
     public String getThumbnail() {
-        return URL_PREFIX + mThumbnail;
+        return (mThumbnail != null)? (URL_PREFIX + mThumbnail) : null;
     }
 
     public String getTitleText() {

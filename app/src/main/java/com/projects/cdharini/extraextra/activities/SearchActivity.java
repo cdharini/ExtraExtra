@@ -4,16 +4,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -41,8 +40,6 @@ import cz.msebera.android.httpclient.Header;
 public class SearchActivity extends AppCompatActivity implements FilterDialogFragment.FilterDialogFragmentListener {
 
     // Views
-    EditText etSearchText;
-    Button btnSearch;
     RecyclerView rvNewsGrid;
 
     List<NewsArticle> mNewsList;
@@ -53,6 +50,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
     String mSortPref;
     String mBeginDatePref;
     String mNewsDeskPref;
+    String mQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +60,6 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Get views and populate them with default i.e empty article list
-        etSearchText = (EditText) findViewById(R.id.etSearch);
-        btnSearch = (Button) findViewById(R.id.btnSearch);
         rvNewsGrid = (RecyclerView) findViewById(R.id.rvNewsGrid);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -73,7 +69,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                refreshArticles(false, page);
+                refreshArticles(false, page, mQuery);
             }
         };
         rvNewsGrid.setLayoutManager(layoutManager);
@@ -85,6 +81,23 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                refreshArticles(true, 0, query);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
@@ -96,9 +109,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } if (id == R.id.action_filter) {
+         if (id == R.id.action_filter) {
             //Show dialog fragment
             FragmentManager fm = getSupportFragmentManager();
             FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance("Testing", "test");
@@ -107,13 +118,6 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /*
-     * Click listener for Search button
-     */
-    public void onSearchClick(View view) {
-        refreshArticles(true, 0);
     }
 
     @Override
@@ -125,13 +129,19 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         mSortPref = preferences.getString(ExtraExtraConstants.SORT_ORDER_PREF, ExtraExtraConstants.SORT_DEFAULT);
 
         // Refresh articles
-        refreshArticles(true, 0);
+        refreshArticles(true, 0, mQuery);
     }
 
     /*
      * Fetches articles and refreshes adapter
      */
-    public void refreshArticles(boolean clearExisting, int page) {
+    public void refreshArticles(boolean clearExisting, int page, String query) {
+
+       /* if (!ExtraExtraUtils.isNetworkAvailable(this) || !ExtraExtraUtils.isOnline()) {
+            Toast.makeText(this, "Unfortunately, there is no Internet now..Try again later",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }*/
 
         if (clearExisting) {
             mNewsList.clear();
@@ -143,7 +153,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         RequestParams requestParams = new RequestParams();
         requestParams.put("api-key", ExtraExtraConstants.API_KEY);
         requestParams.put("page", "" + page);
-        requestParams.put("q", etSearchText.getText().toString());
+        requestParams.put("q", query);
         requestParams.put(ExtraExtraConstants.BEGIN_DATE_PREF, mBeginDatePref);
         requestParams.put(ExtraExtraConstants.SORT_ORDER_PREF, mSortPref);
         requestParams.put(ExtraExtraConstants.NEWS_DESK_PREF, "news_desk:(" + mNewsDeskPref + ")");

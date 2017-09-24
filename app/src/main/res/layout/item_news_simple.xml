@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,37 +9,29 @@
     android:layout_height="wrap_content"
     card_view:cardUseCompatPadding="true"
     card_view:cardCornerRadius="8dp"
-    android:layout_marginBottom="10dp">
+    android:onClick=""
+    android:layout_marginBottom="16dp">
 
     <RelativeLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent">
-        <ImageView
-            android:id="@+id/ivThumbnail"
-            tools:src="@mipmap/ic_launcher"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"/>
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivThumbnail"
             tools:text="Here is a sample headline"
             android:layout_marginStart="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:maxLines="2"
-            android:ellipsize="end"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
         <TextView
             android:id="@+id/tvSynopsis"
             tools:text="This is a sample text of synopsis here is what is happening"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tvTitle"
-            android:layout_marginTop="5dp"
             android:layout_below="@+id/tvTitle"
-            />
+            android:layout_marginTop="5dp"
+            android:layout_alignStart="@+id/tvTitle"
+            android:ellipsize="end"/>
+
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

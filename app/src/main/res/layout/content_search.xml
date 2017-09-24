@@ -9,35 +9,10 @@
     tools:showIn="@layout/activity_search">
 
 
-    <EditText
-        android:id="@+id/etSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:hint="@string/hintsearch"
-        android:inputType="textPersonName"
-        tools:text="Name" />
-
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_alignTop="@+id/etSearch"
-        android:layout_toEndOf="@+id/etSearch"
-        android:layout_alignBottom="@+id/etSearch"
-        android:onClick="onSearchClick"
-        android:text="@string/search" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNewsGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorDivider"
-        android:layout_below="@+id/etSearch"/>
+        android:background="@color/colorDivider" />
 
 </RelativeLayout>

@@ -24,10 +24,13 @@ import java.util.List;
  * Adapter for Recycler view to show news articles
  */
 
-public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.ViewHolder> {
+public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private List<NewsArticle> mNewsArticles;
+
+    private int SIMPLE = 0;
+    private int RICH = 1;
 
     public NewsArticleAdapter(Context context, List<NewsArticle> news) {
         mContext = context;
@@ -35,21 +38,45 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
+        RecyclerView.ViewHolder viewHolder;
+        if (viewType == RICH) {
+            // Inflate the custom layout
+            View newsView = inflater.inflate(R.layout.item_news, parent, false);
 
-        // Inflate the custom layout
-        View newsView = inflater.inflate(R.layout.item_news, parent, false);
+            // Return a new holder instance
+            viewHolder = new ViewHolder(newsView);
+        } else {
+            // Inflate the custom layout
+            View simpleNewsView = inflater.inflate(R.layout.item_news_simple, parent, false);
 
-        // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(newsView);
+            // Return a new holder instance
+            viewHolder = new SimpleViewHolder(simpleNewsView);
+        }
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         NewsArticle newsArticle = mNewsArticles.get(position);
-        holder.bind(newsArticle);
+        if (holder.getItemViewType() == RICH) {
+            ViewHolder viewHolder = (ViewHolder) holder;
+            viewHolder.bind(newsArticle);
+        } else {
+            SimpleViewHolder simpleViewHolder = (SimpleViewHolder) holder;
+            simpleViewHolder.bind(newsArticle);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        NewsArticle newsArticle = mNewsArticles.get(position);
+        if (newsArticle.getThumbnail() == null ) {
+            return SIMPLE;
+        } else {
+            return RICH;
+        }
     }
 
     @Override
@@ -73,6 +100,33 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
         public void bind(NewsArticle newsArticle) {
                 Picasso.with(mContext).load(newsArticle.getThumbnail())
                         .fit().centerInside().error(R.mipmap.ic_launcher).into(ivThumbnail);
+            tvTitle.setText(newsArticle.getTitleText());
+            tvSynopsis.setText(newsArticle.getSynopsis());
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Open activity to display article
+            Intent intent = new Intent(mContext, ArticleActivity.class);
+            intent.putExtra(ExtraExtraConstants.ARTICLE, Parcels.wrap(mNewsArticles.get(getAdapterPosition())));
+            mContext.startActivity(intent);
+        }
+    }
+
+
+    public class SimpleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public TextView tvTitle;
+        public TextView tvSynopsis;
+
+        public SimpleViewHolder(View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(this);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            tvSynopsis = (TextView) itemView.findViewById(R.id.tvSynopsis);
+        }
+
+        public void bind(NewsArticle newsArticle) {
             tvTitle.setText(newsArticle.getTitleText());
             tvSynopsis.setText(newsArticle.getSynopsis());
         }
