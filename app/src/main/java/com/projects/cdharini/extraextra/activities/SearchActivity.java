@@ -90,8 +90,8 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-                refreshArticles(true, 0, query);
+                mQuery = query;
+                refreshArticles(true, 0, mQuery);
                 searchView.clearFocus();
                 return true;
             }
