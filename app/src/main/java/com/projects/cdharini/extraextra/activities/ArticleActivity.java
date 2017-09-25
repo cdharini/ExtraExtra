@@ -30,16 +30,9 @@ public class ArticleActivity extends AppCompatActivity {
         NewsArticle newsArticle = (NewsArticle)
                 Parcels.unwrap(getIntent().getParcelableExtra(ExtraExtraConstants.ARTICLE));
 
-
         // Set support action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-       /* if (!ExtraExtraUtils.isNetworkAvailable(this) || !ExtraExtraUtils.isOnline()) {
-            Toast.makeText(this, "Unfortunately, there is no Internet now..Try again later",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }*/
 
         WebView wvArticle = (WebView) findViewById(R.id.wvArticle);
         // Configure related browser settings
@@ -78,18 +71,4 @@ public class ArticleActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_filter) {
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

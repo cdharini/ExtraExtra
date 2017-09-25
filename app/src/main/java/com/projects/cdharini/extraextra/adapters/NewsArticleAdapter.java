@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.projects.cdharini.extraextra.R;
 import com.projects.cdharini.extraextra.activities.ArticleActivity;
 import com.projects.cdharini.extraextra.models.NewsArticle;
 import com.projects.cdharini.extraextra.utils.ExtraExtraConstants;
-import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -98,8 +98,8 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(NewsArticle newsArticle) {
-                Picasso.with(mContext).load(newsArticle.getThumbnail())
-                        .fit().centerInside().error(R.mipmap.ic_launcher).into(ivThumbnail);
+               Glide.with(mContext).load(newsArticle.getThumbnail())
+                       .error(R.drawable.ic_error_outline_black_100dp).into(ivThumbnail);
             tvTitle.setText(newsArticle.getTitleText());
             tvSynopsis.setText(newsArticle.getSynopsis());
         }

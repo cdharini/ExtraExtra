@@ -24,6 +24,7 @@ import com.projects.cdharini.extraextra.fragments.FilterDialogFragment;
 import com.projects.cdharini.extraextra.models.NewsArticle;
 import com.projects.cdharini.extraextra.utils.EndlessRecyclerViewScrollListener;
 import com.projects.cdharini.extraextra.utils.ExtraExtraConstants;
+import com.projects.cdharini.extraextra.utils.ExtraExtraUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +64,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         rvNewsGrid = (RecyclerView) findViewById(R.id.rvNewsGrid);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        mNewsList = new ArrayList<NewsArticle>();
+        mNewsList = new ArrayList<>();
         mAdapter = new NewsArticleAdapter(this, mNewsList);
 
         mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -109,7 +110,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-         if (id == R.id.action_filter) {
+        if (id == R.id.action_filter) {
             //Show dialog fragment
             FragmentManager fm = getSupportFragmentManager();
             FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance("Testing", "test");
@@ -136,12 +137,6 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
      * Fetches articles and refreshes adapter
      */
     public void refreshArticles(boolean clearExisting, int page, String query) {
-
-       /* if (!ExtraExtraUtils.isNetworkAvailable(this) || !ExtraExtraUtils.isOnline()) {
-            Toast.makeText(this, "Unfortunately, there is no Internet now..Try again later",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }*/
 
         if (clearExisting) {
             mNewsList.clear();
@@ -177,6 +172,14 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Toast.makeText(SearchActivity.this, "Failed to fetch articles", Toast.LENGTH_LONG).show();
+                if (!ExtraExtraUtils.isNetworkAvailable(SearchActivity.this) ||
+                        !ExtraExtraUtils.isOnline()) {
+                    Toast.makeText(SearchActivity.this,
+                            "Unfortunately, there is no Internet now..Try again later",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
 
