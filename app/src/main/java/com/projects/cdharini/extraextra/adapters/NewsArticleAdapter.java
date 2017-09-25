@@ -44,13 +44,11 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (viewType == RICH) {
             // Inflate the custom layout
             View newsView = inflater.inflate(R.layout.item_news, parent, false);
-
             // Return a new holder instance
             viewHolder = new ViewHolder(newsView);
         } else {
             // Inflate the custom layout
             View simpleNewsView = inflater.inflate(R.layout.item_news_simple, parent, false);
-
             // Return a new holder instance
             viewHolder = new SimpleViewHolder(simpleNewsView);
         }
@@ -84,14 +82,20 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mNewsArticles.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivThumbnail;
         public TextView tvTitle;
         public TextView tvSynopsis;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(v -> {
+                // Open activity to display article
+                Intent intent = new Intent(mContext, ArticleActivity.class);
+                intent.putExtra(ExtraExtraConstants.ARTICLE,
+                        Parcels.wrap(mNewsArticles.get(getAdapterPosition())));
+                mContext.startActivity(intent);
+            });
             ivThumbnail = (ImageView) itemView.findViewById(R.id.ivThumbnail);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvSynopsis = (TextView) itemView.findViewById(R.id.tvSynopsis);
@@ -103,27 +107,25 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvTitle.setText(newsArticle.getTitleText());
             tvSynopsis.setText(newsArticle.getSynopsis());
         }
-
-        @Override
-        public void onClick(View v) {
-            // Open activity to display article
-            Intent intent = new Intent(mContext, ArticleActivity.class);
-            intent.putExtra(ExtraExtraConstants.ARTICLE, Parcels.wrap(mNewsArticles.get(getAdapterPosition())));
-            mContext.startActivity(intent);
-        }
     }
 
 
-    public class SimpleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class SimpleViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvTitle;
         public TextView tvSynopsis;
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvSynopsis = (TextView) itemView.findViewById(R.id.tvSynopsis);
+            itemView.setOnClickListener(v -> {
+                // Open activity to display article
+                Intent intent = new Intent(mContext, ArticleActivity.class);
+                intent.putExtra(ExtraExtraConstants.ARTICLE,
+                        Parcels.wrap(mNewsArticles.get(getAdapterPosition())));
+                mContext.startActivity(intent);
+            });
         }
 
         public void bind(NewsArticle newsArticle) {
@@ -131,12 +133,5 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvSynopsis.setText(newsArticle.getSynopsis());
         }
 
-        @Override
-        public void onClick(View v) {
-            // Open activity to display article
-            Intent intent = new Intent(mContext, ArticleActivity.class);
-            intent.putExtra(ExtraExtraConstants.ARTICLE, Parcels.wrap(mNewsArticles.get(getAdapterPosition())));
-            mContext.startActivity(intent);
-        }
     }
 }

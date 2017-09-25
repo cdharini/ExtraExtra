@@ -22,7 +22,8 @@ public class DatePickerDialogFragment extends DialogFragment {
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         // Fragment needs to implement this interface
-        DatePickerDialog.OnDateSetListener listener = (DatePickerDialog.OnDateSetListener) getTargetFragment();
+        DatePickerDialog.OnDateSetListener listener =
+                (DatePickerDialog.OnDateSetListener) getTargetFragment();
         return new DatePickerDialog(getActivity(), listener, year, month, day);
     }
 

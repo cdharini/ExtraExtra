@@ -20,12 +20,10 @@ import android.widget.TextView;
 import com.projects.cdharini.extraextra.R;
 import com.projects.cdharini.extraextra.utils.ExtraExtraConstants;
 
-
-public class FilterDialogFragment extends DialogFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
-    /* TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";*/
+/*
+ * Dialog fragment to select news search filters
+ */
+public class FilterDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     TextView tvBeginDateSelected;
     Spinner spSortOrder;
@@ -50,20 +48,12 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     // TODO: Rename and change types and number of parameters
     public static FilterDialogFragment newInstance(String param1, String param2) {
         FilterDialogFragment fragment = new FilterDialogFragment();
-        //Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        //fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            //  mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
     }
 
     @Override
@@ -94,15 +84,12 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         loadSelections();
 
         // On click listeners
-        btnSave.setOnClickListener(this);
-        tvBeginDateSelected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerDialogFragment();
-                // SETS the target fragment for use later when sending results
-                newFragment.setTargetFragment(FilterDialogFragment.this, 300);
-                newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
-            }
+        btnSave.setOnClickListener(this::onClick);
+        tvBeginDateSelected.setOnClickListener(v -> {
+            DialogFragment newFragment = new DatePickerDialogFragment();
+            // SETS the target fragment for use later when sending results
+            newFragment.setTargetFragment(FilterDialogFragment.this, 300);
+            newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
         });
 
     }
@@ -110,7 +97,6 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     /*
      * Click listener for when Filter Pref Save button is clicked
      */
-    @Override
     public void onClick(View v) {
         FilterDialogFragmentListener listener = (FilterDialogFragmentListener) getActivity();
 
@@ -139,8 +125,10 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     private void loadSelections(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        tvBeginDateSelected.setText(preferences.getString(ExtraExtraConstants.BEGIN_DATE_PREF, ExtraExtraConstants.BEGIN_DATE_DEFAULT));
-        setSpinnerToValue(spSortOrder, preferences.getString(ExtraExtraConstants.SORT_ORDER_PREF, "oldest"));
+        tvBeginDateSelected.setText(preferences.getString(
+                ExtraExtraConstants.BEGIN_DATE_PREF, ExtraExtraConstants.BEGIN_DATE_DEFAULT));
+        setSpinnerToValue(spSortOrder, preferences.getString(
+                ExtraExtraConstants.SORT_ORDER_PREF, ExtraExtraConstants.SORT_DEFAULT));
         populateCheckboxes(preferences.getString(ExtraExtraConstants.NEWS_DESK_PREF, ""));
 
     }

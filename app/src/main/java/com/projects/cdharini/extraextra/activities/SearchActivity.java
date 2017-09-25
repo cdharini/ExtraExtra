@@ -62,8 +62,10 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         setSupportActionBar(toolbar);
         // Get views and populate them with default i.e empty article list
         rvNewsGrid = (RecyclerView) findViewById(R.id.rvNewsGrid);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        StaggeredGridLayoutManager layoutManager =
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager.setGapStrategy(
+                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         mNewsList = new ArrayList<>();
         mAdapter = new NewsArticleAdapter(this, mNewsList);
 
@@ -113,7 +115,8 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         if (id == R.id.action_filter) {
             //Show dialog fragment
             FragmentManager fm = getSupportFragmentManager();
-            FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance("Testing", "test");
+            FilterDialogFragment filterDialogFragment =
+                    FilterDialogFragment.newInstance("Testing", "test");
             filterDialogFragment.show(fm, "Filter");
             return true;
         }
@@ -125,9 +128,11 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
     public void onFinishFilterDialog() {
         // Get shared prefs and save in this context
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mBeginDatePref = preferences.getString(ExtraExtraConstants.BEGIN_DATE_PREF, ExtraExtraConstants.BEGIN_DATE_DEFAULT);
+        mBeginDatePref = preferences.getString(
+                ExtraExtraConstants.BEGIN_DATE_PREF, ExtraExtraConstants.BEGIN_DATE_DEFAULT);
         mNewsDeskPref = preferences.getString(ExtraExtraConstants.NEWS_DESK_PREF, "");
-        mSortPref = preferences.getString(ExtraExtraConstants.SORT_ORDER_PREF, ExtraExtraConstants.SORT_DEFAULT);
+        mSortPref = preferences.getString(
+                ExtraExtraConstants.SORT_ORDER_PREF, ExtraExtraConstants.SORT_DEFAULT);
 
         // Refresh articles
         refreshArticles(true, 0, mQuery);
@@ -170,8 +175,10 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(SearchActivity.this, "Failed to fetch articles", Toast.LENGTH_LONG).show();
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable,
+                                  JSONObject errorResponse) {
+                Toast.makeText(
+                        SearchActivity.this, "Failed to fetch articles", Toast.LENGTH_LONG).show();
                 if (!ExtraExtraUtils.isNetworkAvailable(SearchActivity.this) ||
                         !ExtraExtraUtils.isOnline()) {
                     Toast.makeText(SearchActivity.this,
